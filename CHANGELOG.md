@@ -1,5 +1,10 @@
 # 更新记录
 
+## 1.0.0 — 2026-10-27
+
+- 发布 `certbot-dns-teo` 与 `certbot-dns-tencent-edgeone` 1.0.0，兼容包精确依赖同版本核心包。
+- 沿用 `dns-teo` 认证器、`dns_teo_` 凭证前缀和现有 DNS-01 验证行为。
+
 ## 0.1.0
 
 - 实现腾讯云 EdgeOne (TEO) 的 Certbot DNS-01 插件 `dns-teo`。
