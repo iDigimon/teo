@@ -1,0 +1,32 @@
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[project]
+name = "certbot-dns-tencent-edgeone"
+version = "0.1.0"
+description = "腾讯云 EdgeOne 的 Certbot DNS-01 插件，兼容包名"
+readme = "README.md"
+requires-python = ">=3.9"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{name = "tiyee", email = "tiyee@live.com"}]
+keywords = ["certbot", "dns-01", "acme", "tencent", "edgeone", "teo"]
+dependencies = ["certbot-dns-teo==0.1.0"]
+
+[project.urls]
+Homepage = "https://github.com/iDigimon/teo"
+Repository = "https://github.com/iDigimon/teo"
+Issues = "https://github.com/iDigimon/teo/issues"
+
+[tool.uv.sources]
+certbot-dns-teo = { workspace = true }
+
+# The implementation and Certbot entry point belong to certbot-dns-teo.
+[tool.hatch.build.targets.wheel]
+bypass-selection = true
+core-metadata-version = "2.4"
+
+[tool.hatch.build.targets.sdist]
+include = ["/pyproject.toml", "/README.md", "/LICENSE"]
+core-metadata-version = "2.4"
