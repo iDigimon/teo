@@ -106,7 +106,7 @@ uv run --no-sync python scripts/check_alias_installation.py
 兼容矩阵覆盖 Python 3.9–3.13 × Certbot 3、Python 3.9–3.15 × Certbot 4、Python 3.10–3.15 × Certbot 5；tox 从源码目录之外验证 wheel 和实际 Certbot CLI 插件发现。
 GitHub Actions 执行相同检查，并在全新环境中仅以兼容包为安装目标，验证其自动安装核心依赖且 Certbot 只发现一个 `dns-teo` 插件。
 两个包版本保持一致，兼容包的依赖固定为同版本核心包；升级时需同时修改根目录和 `packages/certbot-dns-tencent-edgeone/pyproject.toml` 中的版本及依赖，测试会检查一致性。
-发布 `v1.0.0` 格式的正式 GitHub Release 后，经 CI 通过使用 PyPI Trusted Publishing 先发布核心包，再发布兼容包。两个 PyPI 项目均需配置此仓库的受信任发布者（`release.yml` 工作流、GitHub `pypi` environment）。预发布仅验证和构建。
+发布 `v1.0.0` 格式的正式 GitHub Release 后，经 CI 通过使用 PyPI Trusted Publishing 先发布核心包，再发布兼容包。两个包使用独立发布 job，各自的 environment URL 指向对应的 PyPI 项目。两个 PyPI 项目均需配置此仓库的受信任发布者（`release.yml` 工作流、GitHub `pypi` environment）。预发布仅验证和构建。
 
 参考实现：[certbot-dns-tencent](https://github.com/iDigimon/certbot-dns-tencent)。
 接口文档：[站点列表](https://cloud.tencent.com/document/api/1552/80713)、[DNS 记录列表](https://cloud.tencent.com/document/api/1552/80716)、[创建记录](https://cloud.tencent.com/document/api/1552/80720)、[删除记录](https://cloud.tencent.com/document/api/1552/80718)。
