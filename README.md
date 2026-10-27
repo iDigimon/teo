@@ -6,8 +6,8 @@
 
 ## 功能特性
 
-- 使用官方腾讯云 TEO SDK（API 版本 `2022-09-01`）
-- 自动分页查询站点，按 DNS 标签边界选择最长匹配的站点，支持 IDN
+- 自动管理 EdgeOne TXT 验证记录
+- 自动匹配所属站点，支持国际化域名（IDN）
 - 支持同名多个 TXT 验证值，仅删除本次创建的记录，保留已有记录
 - 支持临时凭证，可指定站点 ID 解决同名站点歧义
 - 支持 Certbot 3/4/5，Python 3.9–3.15
@@ -88,25 +88,3 @@ SecretId / SecretKey 所属账号需要以下操作权限（CAM 自定义策略�
 
 使用公共端点 `teo.tencentcloudapi.com`，不需要配置 Region。
 指定 `dns_teo_zone_id` 后仍需 `DescribeZones` 权限，以校验域名范围和 NS 接入状态。
-
-## 开发与验证
-
-```bash
-uv sync --locked --all-packages --python 3.13
-uv run --no-sync ruff check .
-uv run --no-sync ruff format --check .
-uv run --no-sync pytest --cov=certbot_dns_teo --cov-report=term-missing
-uv run --no-sync tox run-parallel -p 4
-uv build --all-packages --out-dir dist --clear
-uv run --no-sync twine check --strict dist/*
-uv run --no-sync python scripts/check_alias_installation.py
-```
-
-测试使用真实 SDK 请求/响应对象和 ACME 挑战对象，mock 云端调用，不修改真实 DNS 或申请证书。
-兼容矩阵覆盖 Python 3.9–3.13 × Certbot 3、Python 3.9–3.15 × Certbot 4、Python 3.10–3.15 × Certbot 5；tox 从源码目录之外验证 wheel 和实际 Certbot CLI 插件发现。
-GitHub Actions 执行相同检查，并在全新环境中仅以兼容包为安装目标，验证其自动安装核心依赖且 Certbot 只发现一个 `dns-teo` 插件。
-两个包版本保持一致，兼容包的依赖固定为同版本核心包；升级时需同时修改根目录和 `packages/certbot-dns-tencent-edgeone/pyproject.toml` 中的版本及依赖，测试会检查一致性。
-发布 `v1.0.0` 格式的正式 GitHub Release 后，经 CI 通过使用 PyPI Trusted Publishing 先发布核心包，再发布兼容包。两个包使用独立发布 job，各自的 environment URL 指向对应的 PyPI 项目。两个 PyPI 项目均需配置此仓库的受信任发布者（`release.yml` 工作流、GitHub `pypi` environment）。预发布仅验证和构建。
-
-参考实现：[certbot-dns-tencent](https://github.com/iDigimon/certbot-dns-tencent)。
-接口文档：[站点列表](https://cloud.tencent.com/document/api/1552/80713)、[DNS 记录列表](https://cloud.tencent.com/document/api/1552/80716)、[创建记录](https://cloud.tencent.com/document/api/1552/80720)、[删除记录](https://cloud.tencent.com/document/api/1552/80718)。
