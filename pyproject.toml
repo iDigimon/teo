@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "certbot-dns-teo"
-version = "1.0.0"
+version = "1.0.1"
 description = "腾讯云 EdgeOne (TEO) 插件，用于 Certbot 的 DNS-01 验证"
 readme = "README.md"
 requires-python = ">=3.9"
